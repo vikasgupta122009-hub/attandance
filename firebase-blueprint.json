@@ -1,0 +1,85 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile with role and company binding",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "worker"] },
+        "companyCode": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "role"]
+    },
+    "Company": {
+      "title": "Company",
+      "description": "Organization unit managed by an admin",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "adminUid": { "type": "string" },
+        "name": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["code", "adminUid"]
+    },
+    "AttendanceRecord": {
+      "title": "Attendance Record",
+      "description": "Daily attendance log for a worker",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "companyCode": { "type": "string" },
+        "date": { "type": "string", "description": "YYYY-MM-DD" },
+        "time": { "type": "string", "description": "HH:mm:ss" },
+        "location": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" }
+          }
+        },
+        "method": { "type": "string", "enum": ["Button", "QR", "Admin Override"] },
+        "status": { "type": "string", "enum": ["Present", "Absent"] },
+        "editedByAdmin": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "companyCode", "date", "status"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Communication between worker and admin",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string" },
+        "receiverId": { "type": "string" },
+        "companyCode": { "type": "string" },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["senderId", "receiverId", "text", "timestamp"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "Stores user profile data"
+    },
+    "companies/{code}": {
+      "schema": "Company",
+      "description": "Stores company information indexed by code"
+    },
+    "attendance/{recordId}": {
+      "schema": "AttendanceRecord",
+      "description": "Stores attendance records. recordId should be userId_date"
+    },
+    "messages/{messageId}": {
+      "schema": "Message",
+      "description": "Stores chat messages"
+    }
+  }
+}

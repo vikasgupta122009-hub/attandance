@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
-  "requestFramePermissions": [],
+  "name": "Universal Attendance & GPS Tracker",
+  "description": "Mobile attendance management with GPS tracking, QR scanning, and role-based access for Admins and Workers.",
+  "requestFramePermissions": ["camera", "geolocation"],
   "majorCapabilities": []
 }
